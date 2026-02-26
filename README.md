@@ -2,22 +2,7 @@
 
 Модуль для работы с музыкой VK через Python.
 
-## Что нужно
-
 - Python 3.7+
-- `pip install requests`
-- Токен от Kate Mobile (обычный токен VK не катит, audio API закрыт с 2016)
-
-## Как получить токен
-
-Самый простой способ — через HTTP Canary на телефоне:
-
-1. Ставишь Kate Mobile, логинишься
-2. Ставишь HTTP Canary, включаешь захват
-3. В Kate Mobile заходишь в музыку
-4. В HTTP Canary ищешь запрос к `api.vk.com` — там будет `access_token`
-
-Токен живёт долго, но может слететь если VK что-то заподозрит.
 
 ## Как юзать
 
@@ -47,7 +32,7 @@ for track in tracks:
     print(track.is_available)  # доступен ли трек
 ```
 
-Ссылки на mp3 рабочие, можно качать. Но они временные — живут около суток.
+Ссылки на mp3 рабочие, можно качать. Но они временные — живут около суток. (???)
 
 ## Методы
 
@@ -63,9 +48,9 @@ for track in tracks:
 from vk_audio import VKAudio, TokenExpiredError, AccessDeniedError, RateLimitError
 
 try:
-    tracks = vk.get_user_music("кто-то")
+    tracks = vk.get_user_music("кто-то id или ник")
 except TokenExpiredError:
-    print("токен сдох, нужен новый")
+    print("токен умер, нужен новый")
 except AccessDeniedError:
     print("музыка закрыта у юзера")
 except RateLimitError:
@@ -74,6 +59,5 @@ except RateLimitError:
 
 ## Нюансы
 
-- Между запросами стоит задержка 0.35 сек чтоб VK не банил
+- Между запросами стоит задержка 0.35 сек
 - Некоторые треки заблочены — у них `url` пустой и `is_available = False`
-- Если ловишь error 10 — это VK тупит, просто повтори через пару секунд
